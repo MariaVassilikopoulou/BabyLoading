@@ -1,0 +1,130 @@
+.app {
+  text-align: left;
+  padding: 0 24px 48px;
+}
+
+header h1 {
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tabs button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.entry-form,
+.cycle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.entry-form label,
+.cycle-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.cycle-form {
+  flex-direction: row;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.symptom-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.symptom-add {
+  display: flex;
+  gap: 8px;
+}
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeline-item {
+  border-left: 3px solid var(--border);
+  padding-left: 12px;
+}
+
+.timeline-item--journal {
+  border-left-color: var(--accent);
+}
+
+.timeline-date {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.symptoms {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.fertile-window-banner {
+  border: 1px solid var(--accent-border);
+  background: var(--accent-bg);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.disclaimer {
+  font-size: 13px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.cycle-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}

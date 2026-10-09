@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+
+# Node
+node_modules/
+dist/
+
+# Env
+.env
+.env.local
+
+# IDE
+.vs/
+.idea/
+
+# Claude Code (personal)
+.claude/settings.local.json
