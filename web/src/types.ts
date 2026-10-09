@@ -2,6 +2,7 @@ export type JourneyPhase = "Trying" | "Treatment" | "Pregnant" | "Postpartum" | 
 export type JourneyOutcome = "Birth" | "Loss" | "Stopped";
 export type ConceptionPath = "Natural" | "Iui" | "Ivf";
 export type CycleEntryType = "Period" | "LhTest" | "Temperature";
+export type TreatmentStep = "Stimulation" | "Trigger" | "Retrieval" | "Transfer" | "PregnancyTest";
 
 export interface Symptom {
   name: string;
@@ -16,6 +17,7 @@ export interface JournalEntry {
   mood: number; // 1-5
   symptoms: Symptom[];
   phase: JourneyPhase;
+  isMilestone: boolean;
   pregnancyWeek?: number | null;
 }
 
@@ -24,7 +26,7 @@ export interface CycleEntry {
   userId: string;
   date: string;
   entryType: CycleEntryType;
-  value: number;
+  value: number; // Period: flow 1-3. LhTest: 1 = positive, 0 = negative. Temperature: °C.
 }
 
 export interface ScanResult {
@@ -36,6 +38,7 @@ export interface TreatmentEntry {
   id: string;
   userId: string;
   date: string;
+  step?: TreatmentStep | null;
   cycleDay?: number | null;
   medication?: string | null;
   dose?: string | null;
@@ -56,6 +59,12 @@ export interface Journey {
   ivfTransferDate?: string | null;
   ivfTransferDayNumber?: number | null;
   postpartumStartDate?: string | null;
+}
+
+export interface GestationalAge {
+  weeks: number;
+  days: number;
+  estimatedDueDate: string;
 }
 
 export interface FertileWindowEstimate {

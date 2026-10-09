@@ -6,6 +6,17 @@ public class ScanResult
     public double? LiningMm { get; set; }
 }
 
+// Milestone steps of a treatment course. Optional: day-to-day entries (e.g. a single stimulation
+// injection) may leave it unset. IUI courses simply skip Retrieval and Transfer.
+public enum TreatmentStep
+{
+    Stimulation,
+    Trigger,
+    Retrieval,
+    Transfer,
+    PregnancyTest
+}
+
 public class TreatmentEntry : ICosmosItem
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -13,6 +24,7 @@ public class TreatmentEntry : ICosmosItem
     public string Type { get; } = EntryTypes.Treatment;
 
     public DateOnly Date { get; set; }
+    public TreatmentStep? Step { get; set; }
     public int? CycleDay { get; set; }
     public string? Medication { get; set; }
     public string? Dose { get; set; }

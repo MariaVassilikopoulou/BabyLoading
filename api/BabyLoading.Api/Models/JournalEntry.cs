@@ -18,6 +18,9 @@ public class JournalEntry : ICosmosItem
     public List<Symptom> Symptoms { get; set; } = new();
     public JourneyPhase Phase { get; set; }
 
+    // Pinned by her as a moment worth remembering; shown in the journey's milestone log.
+    public bool IsMilestone { get; set; }
+
     // Snapshot at the time of writing, derived from the journey's conception path
     // (see GestationalAgeCalculator). Only meaningful while Phase == Pregnant.
     public int? PregnancyWeek { get; set; }

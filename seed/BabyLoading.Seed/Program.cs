@@ -16,7 +16,7 @@ var container = CosmosBootstrapper.CreateContainer(client, options);
 Console.WriteLine("Clearing any existing demo data for 'demo-user'...");
 await ClearExistingDemoDataAsync(container, userId);
 
-Console.WriteLine("Seeding a fake journey: trying -> IVF -> pregnancy weeks 1-40...");
+Console.WriteLine("Seeding a fake journey: trying -> IVF -> pregnancy up to today...");
 
 var journeyRepo = new CosmosRepository<Journey>(container, EntryTypes.Journey);
 var cycleRepo = new CosmosRepository<CycleEntry>(container, EntryTypes.Cycle);
@@ -45,6 +45,7 @@ for (var day = 0; day < doses.Length; day++)
     {
         UserId = userId,
         Date = stimStart.AddDays(day),
+        Step = TreatmentStep.Stimulation,
         CycleDay = day + 1,
         Medication = "Gonal-F",
         Dose = doses[day],
@@ -59,6 +60,7 @@ await treatmentRepo.CreateAsync(new TreatmentEntry
 {
     UserId = userId,
     Date = triggerDate,
+    Step = TreatmentStep.Trigger,
     CycleDay = doses.Length + 1,
     Medication = "Ovitrelle (trigger shot)",
     Dose = "250 mcg",
@@ -70,6 +72,7 @@ await treatmentRepo.CreateAsync(new TreatmentEntry
 {
     UserId = userId,
     Date = retrievalDate,
+    Step = TreatmentStep.Retrieval,
     CycleDay = doses.Length + 3,
     ClinicVisit = true,
     ScanResults = new ScanResult { FollicleCount = 12 }
@@ -81,6 +84,7 @@ await treatmentRepo.CreateAsync(new TreatmentEntry
 {
     UserId = userId,
     Date = transferDate,
+    Step = TreatmentStep.Transfer,
     ClinicVisit = true,
     Medication = "Progesterone support",
     Dose = "200 mg"
@@ -91,11 +95,12 @@ await treatmentRepo.CreateAsync(new TreatmentEntry
 {
     UserId = userId,
     Date = betaHcgDate,
+    Step = TreatmentStep.PregnancyTest,
     ClinicVisit = true,
     BetaHcgResult = 215.0
 });
 
-// --- Pregnant phase: weekly journal entries, weeks 1-40 ---
+// --- Pregnant phase: weekly journal entries up to today (never future-dated) ---
 await journeyRepo.CreateAsync(new Journey
 {
     UserId = userId,
@@ -113,9 +118,22 @@ var pregnancyWeekStart = transferDate.AddDays(-(transferDayNumber + 14));
 string[] earlySymptoms = ["nausea", "fatigue", "tender breasts"];
 string[] laterSymptoms = ["back pain", "heartburn", "swollen feet", "fatigue"];
 
+// A couple of moments she "pinned", so the milestone log has something from her own words.
+var milestoneTexts = new Dictionary<int, string>
+{
+    [8] = "Heard the heartbeat for the first time. I cried in the car afterwards.",
+    [19] = "First real kicks tonight! I couldn't stop smiling.",
+};
+
+var today = DateOnly.FromDateTime(DateTime.UtcNow);
 for (var week = 1; week <= 40; week++)
 {
     var entryDate = pregnancyWeekStart.AddDays(week * 7);
+    if (entryDate > today)
+    {
+        break;
+    }
+
     var mood = 3 + rng.Next(0, 3); // 3-5: generally positive with natural variation
     var symptomPool = week <= 13 ? earlySymptoms : laterSymptoms;
     var symptoms = symptomPool
@@ -128,15 +146,16 @@ for (var week = 1; week <= 40; week++)
     {
         UserId = userId,
         Date = entryDate,
-        Text = $"Week {week}: feeling {(mood >= 4 ? "pretty good" : "a bit rough")} today.",
-        Mood = mood,
+        Text = milestoneTexts.GetValueOrDefault(week, $"Week {week}: feeling {(mood >= 4 ? "pretty good" : "a bit rough")} today."),
+        Mood = milestoneTexts.ContainsKey(week) ? 5 : mood,
         Symptoms = symptoms,
         Phase = JourneyPhase.Pregnant,
+        IsMilestone = milestoneTexts.ContainsKey(week),
         PregnancyWeek = week
     });
 }
 
-Console.WriteLine("Done. Seeded 2 cycles, an IVF treatment course, and 40 weekly pregnancy journal entries for 'demo-user'.");
+Console.WriteLine("Done. Seeded 2 cycles, an IVF treatment course, and weekly pregnancy journal entries up to today for 'demo-user'.");
 
 static async Task ClearExistingDemoDataAsync(Container container, string userId)
 {

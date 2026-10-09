@@ -1,32 +1,40 @@
-# React + TypeScript + Vite
+# BabyLoading — web app
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript + Vite. Mobile-first: a phone-width column with bottom navigation.
+How to run it together with the API is in the [main README](../README.md).
 
-Currently, two official plugins are available:
+## Screens
+- **Today** — a "loading" card that changes with her journey phase:
+  *getting ready…* (trying) → *connecting…* (treatment) → *baby loading…* (pregnant, tap the number
+  to switch % / days / weeks) → *loaded.* (postpartum). While pregnant, a **loading log** lists
+  treatment milestones, entries she pinned, and the dates ahead.
+- **Timeline** — every entry, grouped by pregnancy week or month, with filters. The star pins a
+  journal entry as a milestone.
+- **Log** — mood, symptoms with strength 1–5, notes. Phase and pregnancy week are filled in from the
+  current journey.
+- **Cycle** — period flow, LH test and temperature, with the fertile-window estimate. Only shown while
+  trying or in treatment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Calm mode
+A switch on Today that removes percentages, countdowns and all "loading" wording. It turns on by
+default when a journey ended in loss or was stopped. Stored per device in `localStorage` until real
+accounts arrive in Phase 5.
 
-## React Compiler
+## Design
+- Colors, fonts and radii are defined once as CSS variables in `src/index.css` (light and dark).
+- Fonts are bundled via `@fontsource-variable` (Fraunces for headings and numbers, Figtree for text),
+  so no requests go to Google.
+- The app only shows her own data and fixed guidance text; it never interprets values medically.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Structure
+```
+src/
+  api/client.ts        calls to the API
+  lib/dates.ts         local calendar dates and formatting
+  lib/journey.ts       pregnancy progress, treatment steps, milestones
+  lib/labels.ts        shared wording
+  components/          screens and shared pieces
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts
+`npm run dev` · `npm run build` · `npm run lint`

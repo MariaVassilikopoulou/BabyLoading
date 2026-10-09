@@ -1,111 +1,142 @@
+/* Design tokens: every color, font and radius the app uses is defined here once. */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --bg: #fbf6f1;
+  --surface: #ffffff;
+  --surface-muted: #f3ece5;
+  --border: #efe4da;
+  --border-strong: #e3d5ca;
+  --text: #2b211c;
+  --text-soft: #4a3b33;
+  --text-muted: #6e5d53;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --accent: #a0482a;
+  --accent-strong: #7e3820;
+  --accent-soft: #f6e3d8;
+  --on-accent: #ffffff;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
+  /* Entry types: differ in lightness as well as hue, and always come with a text label. */
+  --journal: #a0482a;
+  --cycle: #2f6f73;
+  --cycle-soft: #ddedec;
+  --treatment: #6b4c7a;
+
+  /* The loading card deepens as the journey moves forward. */
+  --card-trying: #f6e3d8;
+  --card-treatment: #a0482a;
+  --card-pregnant: #7e3820;
+  --card-postpartum: #4a3b33;
+  --on-card: #fff7f2;
+  --on-card-soft: #f3d3c2;
+
+  --calm-bg: #f8f5f2;
+  --calm-card: #ede5de;
+  --calm-accent: #6b4c3f;
+
+  --display: "Fraunces Variable", Georgia, serif;
+  --sans: "Figtree Variable", system-ui, "Segoe UI", sans-serif;
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --tap: 44px;
+
+  font: 16px/1.5 var(--sans);
   color: var(--text);
   background: var(--bg);
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+    --bg: #1c1714;
+    --surface: #26201c;
+    --surface-muted: #2f2823;
+    --border: #3a312b;
+    --border-strong: #4a3f37;
+    --text: #f5ece6;
+    --text-soft: #e2d4ca;
+    --text-muted: #b8a698;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+    --accent: #e08a66;
+    --accent-strong: #7e3820;
+    --accent-soft: #4a2c20;
+    --on-accent: #1c1714;
+
+    --journal: #e08a66;
+    --cycle: #6fb3b6;
+    --cycle-soft: #203a3b;
+    --treatment: #c3a3d1;
+
+    --card-trying: #4a2c20;
+
+    --calm-bg: #1c1916;
+    --calm-card: #2c2622;
+    --calm-accent: #d8c3b6;
+
+    color-scheme: dark;
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: var(--bg);
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-variation-settings: "SOFT" 100;
+  font-weight: 650;
+  color: var(--text);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

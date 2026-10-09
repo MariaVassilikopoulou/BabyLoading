@@ -1,4 +1,11 @@
-import type { CycleEntry, FertileWindowEstimate, JournalEntry, TreatmentEntry } from "../types";
+import type {
+  CycleEntry,
+  FertileWindowEstimate,
+  GestationalAge,
+  JournalEntry,
+  Journey,
+  TreatmentEntry,
+} from "../types";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5248";
 
@@ -20,10 +27,16 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  journeys: {
+    list: () => request<Journey[]>("/api/journeys"),
+    gestationalAge: (id: string) => request<GestationalAge>(`/api/journeys/${id}/gestational-age`),
+  },
   journalEntries: {
     list: () => request<JournalEntry[]>("/api/journal-entries"),
     create: (entry: Omit<JournalEntry, "id" | "userId">) =>
       request<JournalEntry>("/api/journal-entries", { method: "POST", body: JSON.stringify(entry) }),
+    update: (entry: JournalEntry) =>
+      request<JournalEntry>(`/api/journal-entries/${entry.id}`, { method: "PUT", body: JSON.stringify(entry) }),
   },
   cycleEntries: {
     list: () => request<CycleEntry[]>("/api/cycle-entries"),
